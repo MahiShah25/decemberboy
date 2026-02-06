@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Bakuda <3</title>
+    <style>
+        :root {
+            --pink: #ffafcc;
+            --dark-pink: #ff5c8a;
+            --soft-white: #fff0f3;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--soft-white) 0%, #fbc2eb 100%);
+            font-family: 'Comic Sans MS', 'Segoe UI', cursive;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            z-index: 10;
+        }
+
+        .hidden { display: none; }
+
+        h1 { color: var(--dark-pink); font-size: 24px; }
+        p { color: #590d22; font-size: 18px; }
+
+        input {
+            padding: 10px;
+            border-radius: 10px;
+            border: 2px solid var(--pink);
+            margin: 10px 0;
+            width: 80%;
+        }
+
+        button {
+            background-color: var(--dark-pink);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            margin: 5px;
+        }
+
+        #noBtn { background-color: #a2a2a2; position: relative; }
+
+        .floating-heart {
+            position: absolute;
+            color: var(--dark-pink);
+            font-size: 20px;
+            animation: float 4s infinite linear;
+            opacity: 0.6;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); }
+            100% { transform: translateY(-10vh) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+<audio id="bgMusic" loop>
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<div id="screen1" class="card">
+    <h1>Hey Bakuda ❤️</h1>
+    <p>So I wanted to ask you something, are you ready?</p>
+    <button onclick="startQuiz()">YES!</button>
+    <button id="noBtn" onmouseover="moveButton(this)">No</button>
+</div>
+
+<div id="screen2" class="card hidden">
+    <h1>Let's play a small game! 🎮</h1>
+    <p>Ques: What was I wearing when you first fell for me and also type the date?</p>
+    <input type="text" id="quizAns" placeholder="e.g. 20th August, Blue Dress">
+    <button onclick="checkQuiz()">Submit</button>
+    <p id="hint" style="font-size: 12px; color: grey;"></p>
+</div>
+
+<div id="screen3" class="card hidden">
+    <h1>One more...</h1>
+    <p>What do I like more?</p>
+    <button onclick="teaseBabu('panipuri')">Panipuri</button>
+    <button onclick="teaseBabu('you')">You</button>
+    <p id="teaseText" class="hidden" style="margin-top:15px; font-weight:bold;"></p>
+</div>
+
+<div id="screen4" class="card hidden">
+    <h1>Now let's get straight to the point babu...</h1>
+    <p>You've been in my life since a long time now and ofc we made it official on 11th December 2024 ❤️</p>
+    <p><strong>Will you be my forever valentine babu?</strong></p>
+    <button onclick="finalYes()">YES!</button>
+    <button id="finalNo" onmouseover="moveButton(this)" onclick="handleNo()">No</button>
+</div>
+
+<div id="screen5" class="card hidden">
+    <h1>YAY! ❤️</h1>
+    <p>I love you the most, Bakuda! I'm so happy you're mine.</p>
+    <img src="photo1.jpg" alt="Our Photo" style="width:100%; border-radius:15px; margin-top:10px;">
+</div>
+
+<script>
+    const music = document.getElementById('bgMusic');
+
+    function startQuiz() {
+        music.play();
+        document.getElementById('screen1').classList.add('hidden');
+        document.getElementById('screen2').classList.remove('hidden');
+    }
+
+    function moveButton(btn) {
+        const x = Math.random() * (window.innerWidth - btn.offsetWidth);
+        const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+        btn.style.position = 'fixed';
+        btn.style.left = x + 'px';
+        btn.style.top = y + 'px';
+    }
+
+    function checkQuiz() {
+        const ans = document.getElementById('quizAns').value.toLowerCase();
+        // Checks for "20" and "red" to be flexible with his typing
+        if (ans.includes('20') && ans.includes('red')) {
+            document.getElementById('screen2').classList.add('hidden');
+            document.getElementById('screen3').classList.remove('hidden');
+        } else {
+            document.getElementById('hint').innerText = "Try again! Think about 2024 and a bright color... 😉";
+        }
+    }
+
+    function teaseBabu(choice) {
+        const text = document.getElementById('teaseText');
+        text.classList.remove('hidden');
+        if (choice === 'you') {
+            text.innerHTML = "The right answer is panipuri ofc I like it more 😜<br>Just kidding baku 🤗";
+        } else {
+            text.innerHTML = "Correct! Panipuri is life! 😋<br>But I love you too!";
+        }
+        setTimeout(() => {
+            document.getElementById('screen3').classList.add('hidden');
+            document.getElementById('screen4').classList.remove('hidden');
+        }, 3500);
+    }
+
+    function handleNo() {
+        alert("Haw ab mujhse chhutkara nahi milega gandu chup chap yes kar 😂");
+    }
+
+    function finalYes() {
+        document.getElementById('screen4').classList.add('hidden');
+        document.getElementById('screen5').classList.remove('hidden');
+    }
+
+    // Floating Hearts Logic
+    function createHeart() {
+        const heart = document.createElement('div');
+        heart.classList.add('floating-heart');
+        heart.innerHTML = '❤️';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 4000);
+    }
+    setInterval(createHeart, 300);
+</script>
+
+</body>
+</html>
